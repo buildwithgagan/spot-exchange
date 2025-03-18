@@ -1,0 +1,54 @@
+{
+  "validation": {
+    "email": {
+      "required": "El correo electrónico es obligatorio",
+      "invalid": "¡{{value}} no es una dirección de correo electrónico válida!"
+    },
+    "password": {
+      "required": "La contraseña es obligatoria",
+      "minLength": "La contraseña debe tener al menos 8 caracteres",
+      "complexity": "La contraseña debe contener al menos una letra mayúscula, una minúscula y un número"
+    },
+    "firstName": {
+      "required": "El nombre es obligatorio",
+      "maxLength": "El nombre no puede tener más de 50 caracteres"
+    },
+    "lastName": {
+      "required": "El apellido es obligatorio",
+      "maxLength": "El apellido no puede tener más de 50 caracteres"
+    }
+  },
+  "auth": {
+    "loginSuccess": "Inicio de sesión exitoso",
+    "registerSuccess": "Usuario registrado exitosamente",
+    "invalidCredentials": "Credenciales inválidas",
+    "authRequired": "Autenticación requerida",
+    "accountDeactivated": "Cuenta desactivada",
+    "accessDenied": "Acceso denegado. Se requieren privilegios de administrador."
+  },
+  "user": {
+    "exists": "El usuario ya existe",
+    "emailInUse": "El correo electrónico ya está en uso",
+    "profileUpdateSuccess": "Perfil actualizado exitosamente",
+    "accountDeactivateSuccess": "Cuenta desactivada exitosamente"
+  },
+  "error": {
+    "server": "Error del servidor",
+    "invalidUpdates": "Actualizaciones inválidas",
+    "routeNotFound": "Ruta no encontrada",
+    "duplicateValue": "Error de valor duplicado",
+    "validationError": "Error de validación",
+    "invalidToken": "Token inválido",
+    "somethingWrong": "¡Algo salió mal!"
+  },
+  "db": {
+    "connected": "Conectado a MongoDB",
+    "connectionError": "Error de conexión a MongoDB:",
+    "retrying": "Reintentando conexión en 5 segundos...",
+    "connectionClosed": "Conexión a MongoDB cerrada"
+  },
+  "server": {
+    "running": "Servidor ejecutándose en el puerto {{port}}",
+    "shutdownError": "Error durante el apagado:"
+  }
+} 

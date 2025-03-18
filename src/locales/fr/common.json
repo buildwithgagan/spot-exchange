@@ -1,0 +1,54 @@
+{
+  "validation": {
+    "email": {
+      "required": "L'adresse e-mail est requise",
+      "invalid": "{{value}} n'est pas une adresse e-mail valide !"
+    },
+    "password": {
+      "required": "Le mot de passe est requis",
+      "minLength": "Le mot de passe doit contenir au moins 8 caractères",
+      "complexity": "Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre"
+    },
+    "firstName": {
+      "required": "Le prénom est requis",
+      "maxLength": "Le prénom ne peut pas dépasser 50 caractères"
+    },
+    "lastName": {
+      "required": "Le nom est requis",
+      "maxLength": "Le nom ne peut pas dépasser 50 caractères"
+    }
+  },
+  "auth": {
+    "loginSuccess": "Connexion réussie",
+    "registerSuccess": "Utilisateur enregistré avec succès",
+    "invalidCredentials": "Identifiants invalides",
+    "authRequired": "Authentification requise",
+    "accountDeactivated": "Compte désactivé",
+    "accessDenied": "Accès refusé. Privilèges administrateur requis."
+  },
+  "user": {
+    "exists": "L'utilisateur existe déjà",
+    "emailInUse": "Cette adresse e-mail est déjà utilisée",
+    "profileUpdateSuccess": "Profil mis à jour avec succès",
+    "accountDeactivateSuccess": "Compte désactivé avec succès"
+  },
+  "error": {
+    "server": "Erreur serveur",
+    "invalidUpdates": "Mises à jour invalides",
+    "routeNotFound": "Route non trouvée",
+    "duplicateValue": "Erreur de valeur en double",
+    "validationError": "Erreur de validation",
+    "invalidToken": "Jeton invalide",
+    "somethingWrong": "Une erreur s'est produite !"
+  },
+  "db": {
+    "connected": "Connecté à MongoDB",
+    "connectionError": "Erreur de connexion MongoDB :",
+    "retrying": "Nouvelle tentative de connexion dans 5 secondes...",
+    "connectionClosed": "Connexion MongoDB fermée"
+  },
+  "server": {
+    "running": "Serveur en cours d'exécution sur le port {{port}}",
+    "shutdownError": "Erreur lors de l'arrêt :"
+  }
+} 

@@ -1,0 +1,54 @@
+{
+  "validation": {
+    "email": {
+      "required": "Email is required",
+      "invalid": "{{value}} is not a valid email address!"
+    },
+    "password": {
+      "required": "Password is required",
+      "minLength": "Password must be at least 8 characters long",
+      "complexity": "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+    },
+    "firstName": {
+      "required": "First name is required",
+      "maxLength": "First name cannot be longer than 50 characters"
+    },
+    "lastName": {
+      "required": "Last name is required",
+      "maxLength": "Last name cannot be longer than 50 characters"
+    }
+  },
+  "auth": {
+    "loginSuccess": "Login successful",
+    "registerSuccess": "User registered successfully",
+    "invalidCredentials": "Invalid credentials",
+    "authRequired": "Authentication required",
+    "accountDeactivated": "Account is deactivated",
+    "accessDenied": "Access denied. Admin privileges required."
+  },
+  "user": {
+    "exists": "User already exists",
+    "emailInUse": "Email already in use",
+    "profileUpdateSuccess": "Profile updated successfully",
+    "accountDeactivateSuccess": "Account deactivated successfully"
+  },
+  "error": {
+    "server": "Server error",
+    "invalidUpdates": "Invalid updates",
+    "routeNotFound": "Route not found",
+    "duplicateValue": "Duplicate value error",
+    "validationError": "Validation error",
+    "invalidToken": "Invalid token",
+    "somethingWrong": "Something went wrong!"
+  },
+  "db": {
+    "connected": "Connected to MongoDB",
+    "connectionError": "MongoDB connection error:",
+    "retrying": "Retrying connection in 5 seconds...",
+    "connectionClosed": "MongoDB connection closed"
+  },
+  "server": {
+    "running": "Server is running on port {{port}}",
+    "shutdownError": "Error during shutdown:"
+  }
+} 

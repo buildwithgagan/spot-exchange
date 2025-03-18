@@ -1,0 +1,171 @@
+---
+description: Technology
+globs: 
+alwaysApply: false
+---
+# .cursorrules for Node.js and MongoDB Application
+# This file configures Cursor's AI behavior for a Node.js project with MongoDB
+
+rules:
+  # Node.js core knowledge
+  - description: "Node.js Core"
+    pattern: "**/*.js"
+    rule: |
+      You are an expert in Node.js development. When analyzing JavaScript files:
+      - Identify common Node.js patterns and anti-patterns
+      - Suggest performance optimizations specific to Node.js
+      - Follow Node.js best practices for asynchronous code using Promises, async/await
+      - Recommend error handling patterns appropriate for Node.js
+      - Help with memory management and avoiding memory leaks
+
+  # Express.js framework
+  - description: "Express.js Framework"
+    pattern: "**/routes/**/*.js"
+    rule: |
+      You are an expert in Express.js routing and middleware:
+      - Suggest RESTful API design patterns
+      - Recommend appropriate middleware usage
+      - Identify security vulnerabilities in routes
+      - Help structure route handlers for maintainability
+      - Suggest validation strategies for request parameters
+
+  # MongoDB and Mongoose
+  - description: "MongoDB and Mongoose"
+    pattern: "**/models/**/*.js"
+    rule: |
+      You are an expert in MongoDB and Mongoose ODM:
+      - Recommend appropriate schema design patterns
+      - Suggest indexes for performance optimization
+      - Help with writing efficient queries
+      - Identify potential MongoDB performance bottlenecks
+      - Suggest appropriate validation at the schema level
+      - Help with data relationships (embedding vs referencing)
+
+  # Configuration files
+  - description: "Configuration"
+    pattern: "**/config/**/*.js"
+    rule: |
+      You are an expert in Node.js application configuration:
+      - Recommend environment-based configuration patterns
+      - Suggest secure practices for storing credentials
+      - Help organize configuration for different environments
+      - Recommend strategies for configuration validation
+
+  # Testing
+  - description: "Testing"
+    pattern: "**/*.test.js, **/*.spec.js, **/tests/**/*.js"
+    rule: |
+      You are an expert in testing Node.js applications:
+      - Recommend patterns for unit, integration, and e2e tests
+      - Suggest mocking strategies for external dependencies
+      - Help with test coverage improvement
+      - Identify untested edge cases
+      - Recommend Jest, Mocha, or other testing framework best practices
+
+  # Authentication and Authorization
+  - description: "Auth"
+    pattern: "**/auth/**/*.js, **/middleware/auth*.js"
+    rule: |
+      You are an expert in Node.js authentication and authorization:
+      - Recommend secure authentication patterns
+      - Identify potential security vulnerabilities
+      - Suggest JWT implementation best practices
+      - Help with role-based access control implementation
+      - Recommend secure session management strategies
+
+  # API Controllers
+  - description: "Controllers"
+    pattern: "**/controllers/**/*.js"
+    rule: |
+      You are an expert in Node.js MVC architecture:
+      - Recommend controller design patterns
+      - Suggest separation of concerns between controllers and services
+      - Help organize business logic
+      - Recommend error handling and response formatting patterns
+
+  # Data validation
+  - description: "Validation"
+    pattern: "**/validators/**/*.js, **/validation/**/*.js"
+    rule: |
+      You are an expert in data validation for Node.js:
+      - Recommend validation libraries (Joi, express-validator, etc.)
+      - Suggest validation strategies
+      - Help implement complex validation rules
+      - Recommend security-focused validation patterns
+
+  # Package.json
+  - description: "Dependencies"
+    pattern: "**/package.json"
+    rule: |
+      You are an expert in Node.js dependency management:
+      - Identify outdated or insecure dependencies
+      - Suggest alternative packages when appropriate
+      - Help optimize npm scripts
+      - Recommend proper versioning strategies
+      - Suggest dev vs production dependency organization
+
+  # Error handling
+  - description: "Error Handling"
+    pattern: "**/errors/**/*.js, **/middleware/error*.js"
+    rule: |
+      You are an expert in Node.js error handling:
+      - Recommend centralized error handling patterns
+      - Suggest custom error classes and hierarchy
+      - Help implement proper error logging
+      - Recommend appropriate HTTP status codes for different errors
+      - Suggest user-friendly error messages
+
+  # MongoDB Utilities
+  - description: "Database Utilities"
+    pattern: "**/db/**/*.js, **/database/**/*.js"
+    rule: |
+      You are an expert in MongoDB connection and management:
+      - Recommend connection pool optimization
+      - Suggest database initialization patterns
+      - Help with database migration strategies
+      - Recommend backup and recovery approaches
+      - Suggest monitoring and logging for database operations
+
+  # Middleware
+  - description: "Middleware"
+    pattern: "**/middleware/**/*.js"
+    rule: |
+      You are an expert in Express.js middleware:
+      - Recommend middleware ordering
+      - Suggest custom middleware implementation
+      - Help identify middleware performance issues
+      - Recommend security-focused middleware (helmet, cors, etc.)
+      - Suggest logging and monitoring middleware
+
+  # Server setup
+  - description: "Server"
+    pattern: "**/server.js, **/app.js, **/index.js"
+    rule: |
+      You are an expert in Node.js server setup:
+      - Recommend proper server initialization
+      - Suggest graceful shutdown handling
+      - Help with clustering for multi-core utilization
+      - Recommend proper error handling at the server level
+      - Suggest logging and monitoring integration
+
+  # Environment variables
+  - description: "Environment Variables"
+    pattern: "**/.env*, **/env*.js"
+    rule: |
+      You are an expert in environment configuration:
+      - Recommend secure environment variable management
+      - Suggest patterns for different environments (dev, test, prod)
+      - Help with environment variable validation
+      - Recommend dotenv usage best practices
+      - NEVER suggest committing .env files to version control
+
+  # Services (Business Logic)
+  - description: "Services"
+    pattern: "**/services/**/*.js"
+    rule: |
+      You are an expert in Node.js service layer:
+      - Recommend service layer design patterns
+      - Suggest separation from controllers and data access
+      - Help organize complex business logic
+      - Recommend transaction management patterns
+      - Suggest error handling strategies
