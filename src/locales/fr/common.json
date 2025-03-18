@@ -7,30 +7,63 @@
     "password": {
       "required": "Le mot de passe est requis",
       "minLength": "Le mot de passe doit contenir au moins 8 caractères",
-      "complexity": "Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre"
+      "complexity": "Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial"
     },
     "firstName": {
       "required": "Le prénom est requis",
       "maxLength": "Le prénom ne peut pas dépasser 50 caractères"
     },
     "lastName": {
-      "required": "Le nom est requis",
-      "maxLength": "Le nom ne peut pas dépasser 50 caractères"
+      "required": "Le nom de famille est requis",
+      "maxLength": "Le nom de famille ne peut pas dépasser 50 caractères"
+    },
+    "dateOfBirth": {
+      "required": "La date de naissance est requise"
+    },
+    "phoneNumber": {
+      "required": "Le numéro de téléphone est requis",
+      "invalid": "Format de numéro de téléphone invalide"
+    },
+    "kyc": {
+      "documentType": "Type de document invalide",
+      "documentNumber": "Le numéro de document est requis",
+      "documentExpiry": "Date d'expiration du document invalide",
+      "documentExpired": "Le document a expiré",
+      "documentFront": "La face avant du document est requise",
+      "documentBack": "La face arrière du document est requise",
+      "selfie": "La photo selfie est requise",
+      "userId": "L'ID utilisateur est requis",
+      "action": "Action invalide",
+      "rejectionReason": "Le motif de rejet est requis lors du rejet du KYC"
     }
   },
   "auth": {
     "loginSuccess": "Connexion réussie",
-    "registerSuccess": "Utilisateur enregistré avec succès",
+    "registerSuccess": "Inscription réussie",
     "invalidCredentials": "Identifiants invalides",
     "authRequired": "Authentification requise",
     "accountDeactivated": "Compte désactivé",
-    "accessDenied": "Accès refusé. Privilèges administrateur requis."
+    "accessDenied": "Accès refusé. Privilèges administrateur requis.",
+    "accountLocked": "Compte verrouillé. Veuillez réessayer dans {{minutes}} minutes",
+    "tooManyAttempts": "Trop de tentatives échouées. Le compte sera verrouillé pendant 30 minutes"
   },
   "user": {
     "exists": "L'utilisateur existe déjà",
     "emailInUse": "Cette adresse e-mail est déjà utilisée",
     "profileUpdateSuccess": "Profil mis à jour avec succès",
-    "accountDeactivateSuccess": "Compte désactivé avec succès"
+    "accountDeactivateSuccess": "Compte désactivé avec succès",
+    "notFound": "Utilisateur non trouvé"
+  },
+  "kyc": {
+    "submitted": "Documents KYC soumis avec succès",
+    "notSubmitted": "Les documents KYC n'ont pas été soumis",
+    "alreadySubmitted": "Les documents KYC sont déjà en cours d'examen",
+    "alreadyVerified": "Le KYC a déjà été vérifié",
+    "approveSuccess": "Vérification KYC approuvée avec succès",
+    "rejectSuccess": "Vérification KYC rejetée",
+    "pending": "Vérification KYC en attente",
+    "rejected": "Vérification KYC rejetée",
+    "verified": "Vérification KYC terminée"
   },
   "error": {
     "server": "Erreur serveur",
@@ -39,7 +72,8 @@
     "duplicateValue": "Erreur de valeur en double",
     "validationError": "Erreur de validation",
     "invalidToken": "Jeton invalide",
-    "somethingWrong": "Une erreur s'est produite !"
+    "somethingWrong": "Une erreur s'est produite !",
+    "userNotFound": "Utilisateur non trouvé"
   },
   "db": {
     "connected": "Connecté à MongoDB",

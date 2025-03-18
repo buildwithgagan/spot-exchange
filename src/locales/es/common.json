@@ -7,15 +7,34 @@
     "password": {
       "required": "La contraseña es obligatoria",
       "minLength": "La contraseña debe tener al menos 8 caracteres",
-      "complexity": "La contraseña debe contener al menos una letra mayúscula, una minúscula y un número"
+      "complexity": "La contraseña debe contener al menos una letra mayúscula, una minúscula, un número y un carácter especial"
     },
     "firstName": {
       "required": "El nombre es obligatorio",
-      "maxLength": "El nombre no puede tener más de 50 caracteres"
+      "maxLength": "El nombre no puede exceder los 50 caracteres"
     },
     "lastName": {
       "required": "El apellido es obligatorio",
-      "maxLength": "El apellido no puede tener más de 50 caracteres"
+      "maxLength": "El apellido no puede exceder los 50 caracteres"
+    },
+    "dateOfBirth": {
+      "required": "La fecha de nacimiento es obligatoria"
+    },
+    "phoneNumber": {
+      "required": "El número de teléfono es obligatorio",
+      "invalid": "Formato de número de teléfono inválido"
+    },
+    "kyc": {
+      "documentType": "Tipo de documento inválido",
+      "documentNumber": "El número de documento es obligatorio",
+      "documentExpiry": "Fecha de vencimiento del documento inválida",
+      "documentExpired": "El documento ha expirado",
+      "documentFront": "La parte frontal del documento es obligatoria",
+      "documentBack": "La parte posterior del documento es obligatoria",
+      "selfie": "La foto selfie es obligatoria",
+      "userId": "El ID de usuario es obligatorio",
+      "action": "Acción inválida",
+      "rejectionReason": "El motivo de rechazo es obligatorio al rechazar el KYC"
     }
   },
   "auth": {
@@ -24,13 +43,27 @@
     "invalidCredentials": "Credenciales inválidas",
     "authRequired": "Autenticación requerida",
     "accountDeactivated": "Cuenta desactivada",
-    "accessDenied": "Acceso denegado. Se requieren privilegios de administrador."
+    "accessDenied": "Acceso denegado. Se requieren privilegios de administrador.",
+    "accountLocked": "Cuenta bloqueada. Por favor, intente nuevamente después de {{minutes}} minutos",
+    "tooManyAttempts": "Demasiados intentos fallidos. La cuenta se bloqueará durante 30 minutos"
   },
   "user": {
     "exists": "El usuario ya existe",
     "emailInUse": "El correo electrónico ya está en uso",
     "profileUpdateSuccess": "Perfil actualizado exitosamente",
-    "accountDeactivateSuccess": "Cuenta desactivada exitosamente"
+    "accountDeactivateSuccess": "Cuenta desactivada exitosamente",
+    "notFound": "Usuario no encontrado"
+  },
+  "kyc": {
+    "submitted": "Documentos KYC enviados exitosamente",
+    "notSubmitted": "Los documentos KYC no han sido enviados",
+    "alreadySubmitted": "Los documentos KYC ya están en revisión",
+    "alreadyVerified": "El KYC ya ha sido verificado",
+    "approveSuccess": "Verificación KYC aprobada exitosamente",
+    "rejectSuccess": "Verificación KYC rechazada",
+    "pending": "Verificación KYC pendiente",
+    "rejected": "Verificación KYC fue rechazada",
+    "verified": "Verificación KYC completada"
   },
   "error": {
     "server": "Error del servidor",
@@ -39,13 +72,14 @@
     "duplicateValue": "Error de valor duplicado",
     "validationError": "Error de validación",
     "invalidToken": "Token inválido",
-    "somethingWrong": "¡Algo salió mal!"
+    "somethingWrong": "¡Algo salió mal!",
+    "userNotFound": "Usuario no encontrado"
   },
   "db": {
     "connected": "Conectado a MongoDB",
-    "connectionError": "Error de conexión a MongoDB:",
+    "connectionError": "Error de conexión MongoDB:",
     "retrying": "Reintentando conexión en 5 segundos...",
-    "connectionClosed": "Conexión a MongoDB cerrada"
+    "connectionClosed": "Conexión MongoDB cerrada"
   },
   "server": {
     "running": "Servidor ejecutándose en el puerto {{port}}",

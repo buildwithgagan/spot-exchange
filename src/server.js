@@ -8,6 +8,7 @@ const i18next = require('./config/i18n');
 const i18nextMiddleware = require('i18next-http-middleware');
 const languageMiddleware = require('./middleware/language');
 const userRoutes = require('./routes/userRoutes');
+const kycRoutes = require('./routes/kycRoutes');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./config/swagger');
 
@@ -53,6 +54,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
 
 // Routes
 app.use('/api/users', userRoutes);
+app.use('/api/kyc', kycRoutes);
 
 // Language route
 app.get('/api/language', (req, res) => {

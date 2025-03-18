@@ -7,15 +7,34 @@
     "password": {
       "required": "Password is required",
       "minLength": "Password must be at least 8 characters long",
-      "complexity": "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+      "complexity": "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
     },
     "firstName": {
       "required": "First name is required",
-      "maxLength": "First name cannot be longer than 50 characters"
+      "maxLength": "First name cannot exceed 50 characters"
     },
     "lastName": {
       "required": "Last name is required",
-      "maxLength": "Last name cannot be longer than 50 characters"
+      "maxLength": "Last name cannot exceed 50 characters"
+    },
+    "dateOfBirth": {
+      "required": "Date of birth is required"
+    },
+    "phoneNumber": {
+      "required": "Phone number is required",
+      "invalid": "Invalid phone number format"
+    },
+    "kyc": {
+      "documentType": "Invalid document type",
+      "documentNumber": "Document number is required",
+      "documentExpiry": "Invalid document expiry date",
+      "documentExpired": "Document has expired",
+      "documentFront": "Front side of document is required",
+      "documentBack": "Back side of document is required",
+      "selfie": "Selfie photo is required",
+      "userId": "User ID is required",
+      "action": "Invalid action",
+      "rejectionReason": "Rejection reason is required when rejecting KYC"
     }
   },
   "auth": {
@@ -23,14 +42,28 @@
     "registerSuccess": "User registered successfully",
     "invalidCredentials": "Invalid credentials",
     "authRequired": "Authentication required",
-    "accountDeactivated": "Account is deactivated",
-    "accessDenied": "Access denied. Admin privileges required."
+    "accountDeactivated": "Account deactivated",
+    "accessDenied": "Access denied. Admin privileges required.",
+    "accountLocked": "Account is locked. Please try again after {{minutes}} minutes",
+    "tooManyAttempts": "Too many failed attempts. Account will be locked for 30 minutes"
   },
   "user": {
     "exists": "User already exists",
-    "emailInUse": "Email already in use",
+    "emailInUse": "Email is already in use",
     "profileUpdateSuccess": "Profile updated successfully",
-    "accountDeactivateSuccess": "Account deactivated successfully"
+    "accountDeactivateSuccess": "Account deactivated successfully",
+    "notFound": "User not found"
+  },
+  "kyc": {
+    "submitted": "KYC documents submitted successfully",
+    "notSubmitted": "KYC documents have not been submitted",
+    "alreadySubmitted": "KYC documents are already under review",
+    "alreadyVerified": "KYC has already been verified",
+    "approveSuccess": "KYC verification approved successfully",
+    "rejectSuccess": "KYC verification rejected",
+    "pending": "KYC verification is pending",
+    "rejected": "KYC verification was rejected",
+    "verified": "KYC verification is complete"
   },
   "error": {
     "server": "Server error",
@@ -39,7 +72,8 @@
     "duplicateValue": "Duplicate value error",
     "validationError": "Validation error",
     "invalidToken": "Invalid token",
-    "somethingWrong": "Something went wrong!"
+    "somethingWrong": "Something went wrong!",
+    "userNotFound": "User not found"
   },
   "db": {
     "connected": "Connected to MongoDB",
