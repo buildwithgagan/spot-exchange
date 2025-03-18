@@ -4,46 +4,37 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
-const i18next = require('./config/i18n');
+const i18next = require('i18next');
 const i18nextMiddleware = require('i18next-http-middleware');
+const i18nextBackend = require('i18next-fs-backend');
+const path = require('path');
 const languageMiddleware = require('./middleware/language');
 const userRoutes = require('./routes/userRoutes');
 const kycRoutes = require('./routes/kycRoutes');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./config/swagger');
+const i18nConfig = require('./config/i18n');
 
 const app = express();
 
-// Enhanced security middleware
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-      "img-src": ["'self'", "data:", "https:"],
-      "script-src": ["'self'", "'unsafe-inline'", "https:"]
-    }
-  },
-  crossOriginEmbedderPolicy: true,
-  crossOriginOpenerPolicy: true,
-  crossOriginResourcePolicy: true
-}));
-
-// Configure CORS
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept-Language'],
-  credentials: true // Allow cookies for language preference
-}));
-
-// Parse cookies
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+app.use(helmet());
 app.use(cookieParser());
 
-// i18n middleware
-app.use(i18nextMiddleware.handle(i18next));
-app.use(languageMiddleware);
+// i18next setup
+i18next
+  .use(i18nextBackend)
+  .use(i18nextMiddleware.LanguageDetector)
+  .init(i18nConfig);
 
-app.use(express.json({ limit: '10kb' })); // Limit payload size
+app.use(i18nextMiddleware.handle(i18next));
+
+// Routes
+app.use('/api/users', userRoutes);
+app.use('/api/kyc', kycRoutes);
 
 // Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
@@ -51,10 +42,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
   customSiteTitle: "User Management API Documentation",
   customfavIcon: "/assets/favicon.ico"
 }));
-
-// Routes
-app.use('/api/users', userRoutes);
-app.use('/api/kyc', kycRoutes);
 
 // Language route
 app.get('/api/language', (req, res) => {
@@ -66,68 +53,40 @@ app.get('/api/language', (req, res) => {
 
 // 404 handler
 app.use((req, res, next) => {
-  res.status(404).json({ message: req.t('error.routeNotFound') });
+  res.status(404).json({ message: i18next.t('errors.routeNotFound') });
 });
 
-// Enhanced error handling middleware
+// Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  
-  // MongoDB duplicate key error
-  if (err.code === 11000) {
-    return res.status(400).json({
-      message: req.t('error.duplicateValue'),
-      error: Object.keys(err.keyValue).map(key => `${key} ${req.t('user.exists')}`).join(', ')
-    });
-  }
-
-  // Validation error
-  if (err.name === 'ValidationError') {
-    return res.status(400).json({
-      message: req.t('error.validationError'),
-      error: Object.values(err.errors).map(e => e.message).join(', ')
-    });
-  }
-
-  // JWT error
-  if (err.name === 'JsonWebTokenError') {
-    return res.status(401).json({ message: req.t('error.invalidToken') });
-  }
-
-  // Default error
-  res.status(err.status || 500).json({
-    message: err.message || req.t('error.somethingWrong'),
-    error: process.env.NODE_ENV === 'development' ? err.stack : undefined
-  });
+  res.status(500).json({ message: i18next.t('errors.serverError') });
 });
 
-// MongoDB connection options
-const mongooseOptions = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 5000,
-  socketTimeoutMS: 45000,
-  family: 4
-};
-
-// Database connection with retry logic
 const connectWithRetry = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI, mongooseOptions);
-    console.log(i18next.t('db.connected'));
+    if (mongoose.connection.readyState === 1) {
+      console.log('MongoDB is already connected');
+      return;
+    }
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('MongoDB connected successfully');
   } catch (error) {
-    console.error(i18next.t('db.connectionError'), error);
-    console.log(i18next.t('db.retrying'));
+    console.error('MongoDB connection error:', error);
     setTimeout(connectWithRetry, 5000);
   }
 };
 
-connectWithRetry().then(() => {
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(i18next.t('server.running', { port: PORT }));
+// Only connect to MongoDB and start server if not in test environment
+if (process.env.NODE_ENV !== 'test') {
+  connectWithRetry().then(() => {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
   });
-});
+}
+
+module.exports = app;
 
 // Graceful shutdown
 const gracefulShutdown = async () => {

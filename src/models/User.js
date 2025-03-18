@@ -52,13 +52,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minlength: [8, 'validation.password.minLength'],
-    validate: {
-      validator: function(v) {
-        return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(v);
-      },
-      message: 'validation.password.complexity'
-    }
+    minlength: [8, 'validation.password.minLength']
   },
   firstName: {
     type: String,
@@ -141,9 +135,19 @@ const userSchema = new mongoose.Schema({
 // Index for KYC status queries
 userSchema.index({ 'kyc.status': 1 });
 
-// Hash password before saving
+// Password complexity validation
+const validatePasswordComplexity = (password) => {
+  return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);
+};
+
+// Hash password before saving and validate complexity
 userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
+  
+  // Validate password complexity before hashing
+  if (!validatePasswordComplexity(this.password)) {
+    throw new Error('validation.password.complexity');
+  }
   
   try {
     const salt = await bcrypt.genSalt(10);

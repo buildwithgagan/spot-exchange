@@ -6,9 +6,9 @@ exports.submitKYC = async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      const firstError = errors.array()[0];
       return res.status(400).json({
-        message: req.t('error.validationError'),
-        errors: errors.array()
+        message: firstError.msg
       });
     }
 
@@ -24,11 +24,18 @@ exports.submitKYC = async (req, res) => {
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({
-        message: req.t('error.userNotFound')
+        message: 'error.userNotFound'
       });
     }
 
-    // Update KYC information
+    // Check if KYC is already submitted
+    if (user.kyc && user.kyc.status === 'submitted') {
+      return res.status(400).json({
+        message: 'kyc.alreadySubmitted'
+      });
+    }
+
+    // Initialize or update KYC information
     user.kyc = {
       status: 'submitted',
       documentType,
@@ -44,13 +51,14 @@ exports.submitKYC = async (req, res) => {
     await user.save();
 
     res.status(200).json({
-      message: req.t('kyc.submitted'),
+      message: 'kyc.submitted',
       kyc: user.kyc
     });
   } catch (error) {
     console.error('KYC submission error:', error);
     res.status(500).json({
-      message: req.t('error.server')
+      message: 'error.server',
+      error: error.message
     });
   }
 };
@@ -61,12 +69,25 @@ exports.getKYCStatus = async (req, res) => {
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({
-        message: req.t('error.userNotFound')
+        message: 'error.userNotFound'
       });
     }
 
+    // Initialize KYC if it doesn't exist
+    if (!user.kyc) {
+      user.kyc = {
+        status: 'pending',
+        documentType: null,
+        documentNumber: null,
+        documentExpiry: null,
+        verificationDate: null,
+        rejectionReason: null
+      };
+      await user.save();
+    }
+
     res.status(200).json({
-      status: user.kyc.status,
+      status: user.kyc.status || 'pending',
       documentType: user.kyc.documentType,
       verificationDate: user.kyc.verificationDate,
       rejectionReason: user.kyc.rejectionReason
@@ -74,7 +95,8 @@ exports.getKYCStatus = async (req, res) => {
   } catch (error) {
     console.error('KYC status check error:', error);
     res.status(500).json({
-      message: req.t('error.server')
+      message: 'error.server',
+      error: error.message
     });
   }
 };
@@ -82,18 +104,33 @@ exports.getKYCStatus = async (req, res) => {
 // Admin: Verify KYC
 exports.verifyKYC = async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const firstError = errors.array()[0];
+      return res.status(400).json({
+        message: firstError.msg
+      });
+    }
+
     const { userId, action, rejectionReason } = req.body;
 
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({
-        message: req.t('error.userNotFound')
+        message: 'error.userNotFound'
+      });
+    }
+
+    // Initialize KYC if it doesn't exist
+    if (!user.kyc) {
+      return res.status(400).json({
+        message: 'kyc.notSubmitted'
       });
     }
 
     if (user.kyc.status !== 'submitted') {
       return res.status(400).json({
-        message: req.t('kyc.notSubmitted')
+        message: 'kyc.invalidStatus'
       });
     }
 
@@ -101,18 +138,21 @@ exports.verifyKYC = async (req, res) => {
     user.kyc.verificationDate = new Date();
     if (action === 'reject') {
       user.kyc.rejectionReason = rejectionReason;
+    } else {
+      user.kyc.rejectionReason = null;
     }
 
     await user.save();
 
     res.status(200).json({
-      message: req.t(`kyc.${action}Success`),
+      message: `kyc.${action}Success`,
       kyc: user.kyc
     });
   } catch (error) {
     console.error('KYC verification error:', error);
     res.status(500).json({
-      message: req.t('error.server')
+      message: 'error.server',
+      error: error.message
     });
   }
 }; 

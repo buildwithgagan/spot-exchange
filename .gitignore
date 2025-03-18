@@ -19,14 +19,16 @@ yarn-error.log
 .DS_Store
 Thumbs.db
 
+# Coverage directory
+coverage/
+
 # Logs
 logs/
 *.log
 
-# Build
+# Build output
 dist/
 build/
-coverage/
 
 # Temporary files
 *.tmp

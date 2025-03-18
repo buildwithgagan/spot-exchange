@@ -9,42 +9,42 @@ const router = express.Router();
 const kycValidation = [
   body('documentType')
     .isIn(['passport', 'nationalId', 'drivingLicense'])
-    .withMessage((value, { req }) => req.t('validation.kyc.documentType')),
+    .withMessage('kyc.invalidDocumentType'),
   body('documentNumber')
     .notEmpty()
-    .withMessage((value, { req }) => req.t('validation.kyc.documentNumber')),
+    .withMessage('kyc.documentNumberRequired'),
   body('documentExpiry')
     .isISO8601()
-    .withMessage((value, { req }) => req.t('validation.kyc.documentExpiry'))
-    .custom((value, { req }) => {
+    .withMessage('kyc.invalidExpiryDate')
+    .custom((value) => {
       const expiryDate = new Date(value);
       if (expiryDate <= new Date()) {
-        throw new Error(req.t('validation.kyc.documentExpired'));
+        throw new Error('kyc.documentExpired');
       }
       return true;
     }),
   body('documentFront')
     .notEmpty()
-    .withMessage((value, { req }) => req.t('validation.kyc.documentFront')),
+    .withMessage('kyc.documentFrontRequired'),
   body('documentBack')
     .notEmpty()
-    .withMessage((value, { req }) => req.t('validation.kyc.documentBack')),
+    .withMessage('kyc.documentBackRequired'),
   body('selfie')
     .notEmpty()
-    .withMessage((value, { req }) => req.t('validation.kyc.selfie'))
+    .withMessage('kyc.selfieRequired')
 ];
 
 const verificationValidation = [
   body('userId')
     .notEmpty()
-    .withMessage((value, { req }) => req.t('validation.kyc.userId')),
+    .withMessage('kyc.userIdRequired'),
   body('action')
     .isIn(['approve', 'reject'])
-    .withMessage((value, { req }) => req.t('validation.kyc.action')),
+    .withMessage('kyc.invalidAction'),
   body('rejectionReason')
     .if(body('action').equals('reject'))
     .notEmpty()
-    .withMessage((value, { req }) => req.t('validation.kyc.rejectionReason'))
+    .withMessage('kyc.rejectionReasonRequired')
 ];
 
 /**

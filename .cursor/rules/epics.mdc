@@ -1,9 +1,337 @@
 ---
-description:
-globs:
+description: epics
+globs: 
+alwaysApply: false
 ---
+---
+project: "Cryptocurrency Spot Exchange"
+epics:
+  - id: "E1"
+    title: "User Account Management"
+    description: "Users should be able to create and manage their accounts on the exchange platform securely."
+    user_stories:
+      - id: "US1.1"
+        title: "Account Registration"
+        narrative: "As a new user, I want to create an account using my email and password so that I can access the exchange."
+        acceptance_criteria:
+          - "Email verification process"
+          - "Password strength validation"
+          - "Terms of service acceptance"
+          - "GDPR/Privacy policy consent"
+      
+      - id: "US1.2"
+        title: "Account Security"
+        narrative: "As a user, I want to set up two-factor authentication (2FA) so that my account remains secure."
+        acceptance_criteria:
+          - "Support for authenticator apps"
+          - "SMS-based verification option"
+          - "Recovery codes generation"
+      
+      - id: "US1.3"
+        title: "KYC Verification"
+        narrative: "As a user, I want to complete KYC verification so that I can trade with higher limits."
+        acceptance_criteria:
+          - "ID document upload"
+          - "Facial verification"
+          - "Address proof submission"
+          - "Verification status tracking"
+      
+      - id: "US1.4"
+        title: "User Profile Management"
+        narrative: "As a user, I want to update my profile information so that my account details remain current."
+        acceptance_criteria:
+          - "Edit personal information"
+          - "Update contact details"
+          - "Change password functionality"
+          - "Email notification preferences"
 
-# Your rule content
+  - id: "E2"
+    title: "Wallet Management"
+    description: "Users should be able to deposit, withdraw, and manage multiple cryptocurrencies in their exchange wallets."
+    user_stories:
+      - id: "US2.1"
+        title: "Wallet Creation"
+        narrative: "As a user, I want wallets to be automatically created for supported cryptocurrencies so that I can start trading."
+        acceptance_criteria:
+          - "Auto-generation of wallet addresses for each supported cryptocurrency"
+          - "View wallet balances in user dashboard"
+          - "Wallet activation/deactivation options"
+      
+      - id: "US2.2"
+        title: "Crypto Deposits"
+        narrative: "As a user, I want to deposit cryptocurrencies to my exchange wallet so that I can start trading."
+        acceptance_criteria:
+          - "Generate unique deposit addresses for each cryptocurrency"
+          - "QR code for deposit addresses"
+          - "Real-time deposit tracking"
+          - "Confirmation threshold settings"
+      
+      - id: "US2.3"
+        title: "Crypto Withdrawals"
+        narrative: "As a user, I want to withdraw cryptocurrencies to my external wallet so that I can secure my assets."
+        acceptance_criteria:
+          - "Address validation"
+          - "Withdrawal fee display"
+          - "Security confirmation (email/2FA)"
+          - "Withdrawal limits enforcement"
+          - "Whitelist address management"
+      
+      - id: "US2.4"
+        title: "Transaction History"
+        narrative: "As a user, I want to view my deposit and withdrawal history so that I can track my funds."
+        acceptance_criteria:
+          - "Filter by transaction type, date, and status"
+          - "Transaction details (hash, amount, fee, timestamp)"
+          - "Export transaction history"
+          - "Real-time status updates"
 
-- You can @ files here
-- You can use markdown but dont have to
+  - id: "E3"
+    title: "Market Data and Trading Interface"
+    description: "Users should have access to real-time market data and a user-friendly interface for trading."
+    user_stories:
+      - id: "US3.1"
+        title: "Market Overview"
+        narrative: "As a user, I want to see an overview of all available trading pairs so that I can identify trading opportunities."
+        acceptance_criteria:
+          - "List all trading pairs with current price"
+          - "24h price change percentage"
+          - "24h volume"
+          - "Favorite/star trading pairs"
+          - "Sorting and filtering options"
+      
+      - id: "US3.2"
+        title: "Detailed Market View"
+        narrative: "As a user, I want to view detailed market information for a specific trading pair so that I can make informed decisions."
+        acceptance_criteria:
+          - "Real-time price updates"
+          - "Price chart with multiple timeframes"
+          - "Order book visualization"
+          - "Recent trades list"
+          - "Market statistics (24h high/low, volume)"
+      
+      - id: "US3.3"
+        title: "Price Charts"
+        narrative: "As a user, I want to analyze price charts with technical indicators so that I can perform technical analysis."
+        acceptance_criteria:
+          - "Candlestick/line chart options"
+          - "Multiple timeframe selection (1m, 5m, 15m, 1h, 4h, 1d, 1w)"
+          - "Drawing tools (trend lines, Fibonacci retracement)"
+          - "Technical indicators (MA, EMA, RSI, MACD, Bollinger Bands)"
+          - "Chart saving/sharing functionality"
+      
+      - id: "US3.4"
+        title: "Order Book and Depth Chart"
+        narrative: "As a user, I want to view the order book and depth chart so that I can understand market liquidity."
+        acceptance_criteria:
+          - "Real-time order book updates"
+          - "Aggregation level adjustment"
+          - "Color-coded buy/sell orders"
+          - "Visual depth chart representation"
+          - "Hover details on depth chart"
+
+  - id: "E4"
+    title: "Spot Trading Functionality"
+    description: "Users should be able to place and manage different types of buy and sell orders."
+    user_stories:
+      - id: "US4.1"
+        title: "Market Orders"
+        narrative: "As a trader, I want to place market buy/sell orders so that I can execute trades immediately at the current market price."
+        acceptance_criteria:
+          - "Instant order execution"
+          - "Available balance validation"
+          - "Fee calculation and display"
+          - "Trade confirmation"
+          - "Receipt and order details"
+      
+      - id: "US4.2"
+        title: "Limit Orders"
+        narrative: "As a trader, I want to place limit buy/sell orders so that I can execute trades at my specified price."
+        acceptance_criteria:
+          - "Price and quantity input"
+          - "Total cost/proceeds calculation"
+          - "Fee preview"
+          - "Order expiration options"
+          - "Partial fill handling"
+      
+      - id: "US4.3"
+        title: "Stop-Limit Orders"
+        narrative: "As a trader, I want to place stop-limit orders so that I can automate my trading strategy and risk management."
+        acceptance_criteria:
+          - "Stop price and limit price inputs"
+          - "Trigger mechanism explanation"
+          - "Duration options"
+          - "Clear visual distinction from other order types"
+      
+      - id: "US4.4"
+        title: "Order Management"
+        narrative: "As a trader, I want to view and cancel my open orders so that I can manage my trading positions."
+        acceptance_criteria:
+          - "List of all open orders"
+          - "Filter by trading pair and order type"
+          - "One-click cancellation"
+          - "Batch cancellation option"
+          - "Order modification functionality"
+      
+      - id: "US4.5"
+        title: "Order History"
+        narrative: "As a trader, I want to view my order history so that I can track my trading performance."
+        acceptance_criteria:
+          - "Complete order history with filtering options"
+          - "Order details (price, quantity, time, status)"
+          - "Export functionality (CSV, PDF)"
+          - "Performance metrics calculation"
+
+  - id: "E5"
+    title: "Trading Fee Structure"
+    description: "Implement a fair and transparent fee structure for all trading activities."
+    user_stories:
+      - id: "US5.1"
+        title: "Fee Schedule"
+        narrative: "As a user, I want to view the fee schedule so that I understand the costs of trading."
+        acceptance_criteria:
+          - "Clear display of maker/taker fees"
+          - "Volume-based tier explanation"
+          - "Special promotional rates"
+          - "Fee calculation examples"
+      
+      - id: "US5.2"
+        title: "Fee Reduction Options"
+        narrative: "As a user, I want to use the platform's native token to reduce my trading fees."
+        acceptance_criteria:
+          - "Token-based fee discount explanation"
+          - "Toggle option to pay fees with native token"
+          - "Real-time calculation of discounted fees"
+          - "Token balance requirements"
+      
+      - id: "US5.3"
+        title: "Fee History"
+        narrative: "As a user, I want to view my fee payment history so that I can track my trading costs."
+        acceptance_criteria:
+          - "Detailed fee history per trade"
+          - "Fee summary by time period"
+          - "Export functionality"
+          - "Fee tier status progress indicator"
+
+  - id: "E6"
+    title: "Security and Compliance"
+    description: "Implement robust security measures and compliance protocols to protect users and meet regulatory requirements."
+    user_stories:
+      - id: "US6.1"
+        title: "Login Security"
+        narrative: "As a user, I want to have secure login mechanisms so that my account is protected."
+        acceptance_criteria:
+          - "Multi-factor authentication"
+          - "Suspicious login detection"
+          - "IP whitelisting"
+          - "Device management"
+      
+      - id: "US6.2"
+        title: "Anti-Money Laundering (AML)"
+        narrative: "As a compliance officer, I want the system to have AML checks so that the platform meets regulatory requirements."
+        acceptance_criteria:
+          - "Transaction monitoring"
+          - "Suspicious activity detection"
+          - "Reporting mechanisms"
+          - "User risk scoring"
+      
+      - id: "US6.3"
+        title: "Trade Surveillance"
+        narrative: "As a compliance officer, I want to have trade surveillance tools to detect market manipulation."
+        acceptance_criteria:
+          - "Wash trading detection"
+          - "Pump and dump pattern recognition"
+          - "Front-running detection"
+          - "Alert system for suspicious trading patterns"
+
+  - id: "E7"
+    title: "Reporting and Analytics"
+    description: "Provide users with detailed reports and analytics about their trading activities."
+    user_stories:
+      - id: "US7.1"
+        title: "Trading Performance Report"
+        narrative: "As a trader, I want to view my trading performance so that I can improve my strategies."
+        acceptance_criteria:
+          - "Profit/loss calculation"
+          - "Performance by trading pair"
+          - "Performance timeline charts"
+          - "Comparison with market benchmarks"
+      
+      - id: "US7.2"
+        title: "Tax Reporting"
+        narrative: "As a user, I want to generate tax reports so that I can comply with tax requirements."
+        acceptance_criteria:
+          - "Annual transaction summary"
+          - "Cost basis calculation"
+          - "Export in tax software compatible formats"
+          - "Multi-jurisdiction support"
+      
+      - id: "US7.3"
+        title: "API Usage Analytics"
+        narrative: "As an API trader, I want to view my API usage statistics so that I can optimize my trading bots."
+        acceptance_criteria:
+          - "API call frequency"
+          - "Request success/failure rates"
+          - "Rate limit usage"
+          - "Error analysis"
+
+  - id: "E8"
+    title: "API and Integration"
+    description: "Provide robust API access for programmatic trading and third-party integrations."
+    user_stories:
+      - id: "US8.1"
+        title: "REST API"
+        narrative: "As a developer, I want to access a well-documented REST API so that I can build trading bots and integrations."
+        acceptance_criteria:
+          - "Comprehensive API documentation"
+          - "Authentication mechanisms"
+          - "Rate limiting information"
+          - "Sandbox environment for testing"
+      
+      - id: "US8.2"
+        title: "WebSocket API"
+        narrative: "As a developer, I want to access WebSocket streams so that I can receive real-time market data."
+        acceptance_criteria:
+          - "Market data streams"
+          - "Order book streams"
+          - "User data streams"
+          - "Connection management documentation"
+      
+      - id: "US8.3"
+        title: "API Key Management"
+        narrative: "As an API user, I want to create and manage API keys so that I can control access to my account."
+        acceptance_criteria:
+          - "API key creation with customizable permissions"
+          - "IP restriction options"
+          - "Key activation/deactivation"
+          - "Usage monitoring"
+
+  - id: "E9"
+    title: "Mobile Experience"
+    description: "Provide a seamless mobile experience for trading on the go."
+    user_stories:
+      - id: "US9.1"
+        title: "Mobile App Development"
+        narrative: "As a user, I want to access the exchange via a mobile app so that I can trade on the go."
+        acceptance_criteria:
+          - "iOS and Android native apps"
+          - "Responsive design"
+          - "Core trading functionality"
+          - "Push notifications for trade executions and price alerts"
+      
+      - id: "US9.2"
+        title: "Price Alerts"
+        narrative: "As a mobile user, I want to set price alerts so that I can be notified of market opportunities."
+        acceptance_criteria:
+          - "Price threshold configuration"
+          - "Multiple alert types (above, below, percentage change)"
+          - "Push notification delivery"
+          - "Alert history and management"
+      
+      - id: "US9.3"
+        title: "Mobile Security"
+        narrative: "As a mobile user, I want additional security features so that my account remains secure when trading on mobile."
+        acceptance_criteria:
+          - "Biometric authentication"
+          - "PIN/pattern lock"
+          - "Automatic session timeout"
+          - "Secure storage of credentials"

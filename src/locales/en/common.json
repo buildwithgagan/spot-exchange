@@ -83,6 +83,15 @@
   },
   "server": {
     "running": "Server is running on port {{port}}",
-    "shutdownError": "Error during shutdown:"
+    "shutdownError": "Error during shutdown:",
+    "connected": "Connected to MongoDB"
+  },
+  "errors": {
+    "serverError": "Internal server error",
+    "routeNotFound": "Route not found",
+    "validationError": "Validation error",
+    "invalidToken": "Invalid token",
+    "unauthorized": "Unauthorized",
+    "forbidden": "Forbidden"
   }
 } 

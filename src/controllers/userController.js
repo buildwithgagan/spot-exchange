@@ -6,11 +6,8 @@ const { validationResult } = require('express-validator');
 const generateToken = (userId) => {
   return jwt.sign(
     { userId },
-    process.env.JWT_SECRET,
-    { 
-      expiresIn: process.env.JWT_EXPIRATION,
-      algorithm: 'HS256' // Explicitly specify the algorithm
-    }
+    process.env.JWT_SECRET || 'test-jwt-secret',
+    { expiresIn: '1h' }
   );
 };
 
@@ -28,15 +25,21 @@ exports.register = async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return createErrorResponse(req, res, 400, 'error.validationError', errors.array());
+      return res.status(400).json({
+        message: 'Validation error',
+        error: errors.array()
+      });
     }
 
-    const { email, password, firstName, lastName } = req.body;
+    const { email, password, firstName, lastName, dateOfBirth, phoneNumber, address } = req.body;
 
-    // Check if user already exists using lean() for better performance
-    const existingUser = await User.findOne({ email }).lean();
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return createErrorResponse(req, res, 400, 'user.exists');
+      return res.status(400).json({
+        message: 'User already exists',
+        error: 'Email is already registered'
+      });
     }
 
     // Create new user
@@ -44,45 +47,71 @@ exports.register = async (req, res) => {
       email,
       password,
       firstName,
-      lastName
+      lastName,
+      dateOfBirth,
+      phoneNumber,
+      address
     });
 
     await user.save();
     const token = generateToken(user._id);
 
     res.status(201).json({
-      message: req.t('auth.registerSuccess'),
+      message: 'User registered successfully',
       user: user.toJSON(),
       token
     });
   } catch (error) {
-    createErrorResponse(req, res, 500, 'error.server', error.message);
+    console.error('Registration error:', error);
+    res.status(500).json({
+      message: 'Server error',
+      error: error.message
+    });
   }
 };
 
 // Login user
 exports.login = async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: 'Validation error',
+        error: errors.array()
+      });
+    }
+
     const { email, password } = req.body;
 
-    // Find user with necessary fields only
-    const user = await User.findOne({ email })
-      .select('+password +isActive')
-      .exec();
-
+    // Find user
+    const user = await User.findOne({ email });
     if (!user) {
-      return createErrorResponse(req, res, 401, 'auth.invalidCredentials');
+      return res.status(401).json({
+        message: 'Invalid credentials'
+      });
+    }
+
+    // Check if account is locked
+    if (user.isAccountLocked()) {
+      return res.status(401).json({
+        message: 'Account is locked due to too many failed attempts'
+      });
     }
 
     // Check password
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      return createErrorResponse(req, res, 401, 'auth.invalidCredentials');
+      await user.handleFailedLogin();
+      return res.status(401).json({
+        message: 'Invalid credentials'
+      });
     }
 
     // Check if user is active
     if (!user.isActive) {
-      return createErrorResponse(req, res, 401, 'auth.accountDeactivated');
+      return res.status(401).json({
+        message: 'Account is deactivated'
+      });
     }
 
     // Update last login timestamp
@@ -91,75 +120,110 @@ exports.login = async (req, res) => {
     const token = generateToken(user._id);
 
     res.json({
-      message: req.t('auth.loginSuccess'),
+      message: 'Login successful',
       user: user.toJSON(),
       token
     });
   } catch (error) {
-    createErrorResponse(req, res, 500, 'error.server', error.message);
+    console.error('Login error:', error);
+    res.status(500).json({
+      message: 'Server error',
+      error: error.message
+    });
   }
 };
 
 // Get user profile
 exports.getProfile = async (req, res) => {
   try {
-    // Use lean() for better performance since we don't need a Mongoose document
-    const user = await User.findById(req.user._id)
-      .select('-password')
-      .lean();
-    
-    res.json(user);
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({
+        message: 'User not found'
+      });
+    }
+    res.json(user.toJSON());
   } catch (error) {
-    createErrorResponse(req, res, 500, 'error.server', error.message);
+    res.status(500).json({
+      message: 'Server error',
+      error: error.message
+    });
   }
 };
 
 // Update user profile
 exports.updateProfile = async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: 'Validation error',
+        error: errors.array()
+      });
+    }
+
     const updates = Object.keys(req.body);
-    const allowedUpdates = ['firstName', 'lastName', 'email', 'password'];
+    const allowedUpdates = ['firstName', 'lastName', 'phoneNumber', 'address'];
     const isValidOperation = updates.every(update => allowedUpdates.includes(update));
 
     if (!isValidOperation) {
-      return createErrorResponse(req, res, 400, 'error.invalidUpdates');
+      return res.status(400).json({
+        message: 'Invalid updates',
+        error: 'Some fields cannot be updated'
+      });
     }
 
-    // If email is being updated, check for duplicates
-    if (updates.includes('email')) {
-      const existingUser = await User.findOne({ 
-        email: req.body.email,
-        _id: { $ne: req.user._id }
-      }).lean();
-      
-      if (existingUser) {
-        return createErrorResponse(req, res, 400, 'user.emailInUse');
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({
+        message: 'User not found'
+      });
+    }
+
+    updates.forEach(update => {
+      if (update === 'address' && typeof req.body[update] === 'object') {
+        user[update] = { ...user[update], ...req.body[update] };
+      } else {
+        user[update] = req.body[update];
       }
-    }
+    });
 
-    updates.forEach(update => req.user[update] = req.body[update]);
-    await req.user.save();
+    await user.save();
 
+    // Return the updated user data directly in the response
+    const updatedUser = user.toJSON();
     res.json({
-      message: req.t('user.profileUpdateSuccess'),
-      user: req.user
+      ...updatedUser,
+      message: 'Profile updated successfully'
     });
   } catch (error) {
-    createErrorResponse(req, res, 500, 'error.server', error.message);
+    res.status(500).json({
+      message: 'Server error',
+      error: error.message
+    });
   }
 };
 
 // Delete user account
 exports.deleteAccount = async (req, res) => {
   try {
-    req.user.isActive = false;
-    await req.user.save();
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({
+        message: 'User not found'
+      });
+    }
+
+    // Actually delete the user instead of just deactivating
+    await User.findByIdAndDelete(req.user._id);
     
-    // Invalidate all existing sessions (optional)
-    // This would require additional session management implementation
-    
-    res.json({ message: req.t('user.accountDeactivateSuccess') });
+    res.json({
+      message: 'Account deleted successfully'
+    });
   } catch (error) {
-    createErrorResponse(req, res, 500, 'error.server', error.message);
+    res.status(500).json({
+      message: 'Server error',
+      error: error.message
+    });
   }
 }; 
